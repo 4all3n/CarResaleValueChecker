@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Car Resale Value Predictor</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ["Inter", "sans-serif"],
+                        },
+                    },
+                },
+            };
+        </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            body {
+                font-family: "Inter", sans-serif;
+            }
+        </style>
+    </head>
+
+    <body class="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 min-h-screen flex items-center justify-center p-6">
+        <div class="w-full max-w-4xl">
+            <div class="bg-gradient-to-br from-gray-800/80 via-gray-800/60 to-gray-700/40 backdrop-blur-md border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+                    <!-- Left: Intro -->
+                    <div class="p-10 border-r border-gray-700 hidden md:block">
+                        <h1 class="text-3xl font-bold text-white mb-3">Car Resale Value Predictor</h1>
+                        <p class="text-gray-300 mb-6">Get an instant AI-powered estimate for your car. Fill in details and press Predict.</p>
+
+
+                    </div>
+
+                    <!-- Right: Form -->
+                    <div class="p-6 md:p-10">
+                        <form id="prediction-form" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="sm:col-span-2">
+                                    <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Car Model</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        placeholder="e.g. Maruti Swift Dzire VDI"
+                                        value="Maruti Swift Dzire VDI"
+                                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label for="year" class="block text-sm font-medium text-gray-300 mb-2">Year</label>
+                                    <input
+                                        type="number"
+                                        id="year"
+                                        name="year"
+                                        required
+                                        min="1995"
+                                        max="2020"
+                                        value="2016"
+                                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label for="km_driven" class="block text-sm font-medium text-gray-300 mb-2">Kilometers Driven</label>
+                                    <input
+                                        type="number"
+                                        id="km_driven"
+                                        name="km_driven"
+                                        required
+                                        min="0"
+                                        value="70000"
+                                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label for="fuel" class="block text-sm font-medium text-gray-300 mb-2">Fuel Type</label>
+                                    <div class="relative">
+                                        <select
+                                            id="fuel"
+                                            name="fuel"
+                                            required
+                                            class="w-full appearance-none pr-10 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                            <!-- Values taken from dataset -->
+                                            <option value="Petrol">Petrol</option>
+                                            <option value="Diesel" selected>Diesel</option>
+                                            <option value="CNG">CNG</option>
+                                            <option value="LPG">LPG</option>
+                                        </select>
+                                        <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="seller_type" class="block text-sm font-medium text-gray-300 mb-2">Seller Type</label>
+                                    <div class="relative">
+                                        <select
+                                            id="seller_type"
+                                            name="seller_type"
+                                            required
+                                            class="w-full appearance-none pr-10 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                            <option value="Individual" selected>Individual</option>
+                                            <option value="Dealer">Dealer</option>
+                                            <option value="Trustmark Dealer">Trustmark Dealer</option>
+                                        </select>
+                                        <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="transmission" class="block text-sm font-medium text-gray-300 mb-2">Transmission</label>
+                                    <div class="relative">
+                                        <select
+                                            id="transmission"
+                                            name="transmission"
+                                            required
+                                            class="w-full appearance-none pr-10 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                            <option value="Manual" selected>Manual</option>
+                                            <option value="Automatic">Automatic</option>
+                                        </select>
+                                        <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="owner" class="block text-sm font-medium text-gray-300 mb-2">Owner</label>
+                                    <div class="relative">
+                                        <select
+                                            id="owner"
+                                            name="owner"
+                                            required
+                                            class="w-full appearance-none pr-10 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                            <!-- Owner options extracted from dataset -->
+                                            <option value="First Owner" selected>First Owner</option>
+                                            <option value="Second Owner">Second Owner</option>
+                                            <option value="Third Owner">Third Owner</option>
+                                            <option value="Fourth & Above Owner">Fourth & Above Owner</option>
+                                        </select>
+                                        <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+                                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-2">
+                                <button
+                                    id="predict-button"
+                                    type="submit"
+                                    class="w-full inline-flex items-center justify-center gap-3 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
+                                >
+                                    <svg id="spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span id="button-text">Predict Price</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Result -->
+                        <div id="result-container" class="hidden mt-6 p-5 rounded-lg bg-gradient-to-r from-green-800/30 to-green-700/10 border border-green-700">
+                            <div class="text-sm text-gray-300">Estimated Resale Value</div>
+                            <div id="result-price" class="mt-2 text-3xl md:text-4xl font-extrabold text-green-300"></div>
+                            <div id="result-error" class="mt-2 text-sm font-medium text-red-400 hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Keep behavior from original UI; selects/options updated to reflect dataset values
+            const form = document.getElementById("prediction-form");
+            const resultContainer = document.getElementById("result-container");
+            const resultPrice = document.getElementById("result-price");
+            const resultError = document.getElementById("result-error");
+            const spinner = document.getElementById("spinner");
+            const buttonText = document.getElementById("button-text");
+            const predictButton = document.getElementById("predict-button");
+
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                // show loading
+                spinner.classList.remove("hidden");
+                buttonText.textContent = "Calculating...";
+                predictButton.disabled = true;
+                resultContainer.classList.add("hidden");
+                resultPrice.classList.add("hidden");
+                resultError.classList.add("hidden");
+
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                try {
+                    const response = await fetch("/predict", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (!response.ok) {
+                        let errMsg = "Something went wrong";
+                        try {
+                            const err = await response.json();
+                            errMsg = err.error || errMsg;
+                        } catch (e) {}
+                        throw new Error(errMsg);
+                    }
+
+                    const result = await response.json();
+                    const formattedPrice = new Intl.NumberFormat("en-IN", {
+                        style: "currency",
+                        currency: "INR",
+                        maximumFractionDigits: 0,
+                    }).format(result.prediction);
+
+                    resultPrice.textContent = formattedPrice;
+                    resultPrice.classList.remove("hidden");
+                    resultContainer.classList.remove("hidden");
+                } catch (error) {
+                    console.error("Error:", error);
+                    resultError.textContent = `Error: ${error.message}`;
+                    resultError.classList.remove("hidden");
+                    resultContainer.classList.remove("hidden");
+                } finally {
+                    spinner.classList.add("hidden");
+                    buttonText.textContent = "Predict Price";
+                    predictButton.disabled = false;
+                }
+            });
+        </script>
+    </body>
+</html>
